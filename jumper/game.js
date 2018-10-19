@@ -1,5 +1,20 @@
 var pl, n = 0;
 
+var enemies = [];
+
+class Enemy  {
+  constructor(x, y, w, h) {
+    this.sprite = createSprite(x, y, w, h);
+    this.sprite.velocity.x += random(1, 7);
+  }
+
+  update() {
+    if (this.sprite.position.x > width) {
+      this.sprite.position.x = 0;
+      this.sprite.position.y = random(0, (height / 2) + 15);
+    }
+  }
+}
 /*
 state
 0 - uninitialized, game has not begun.
@@ -13,11 +28,17 @@ function setup() {
   textSize(32);
 
   pl = createSprite(30, 50, 30, 30);
+  for (let i=0; i < 3; i++) {enemies.push(new Enemy(0, random(0, (height / 2) + 15), 30, 30));}
 }
 
 function draw() {
   background('white');
   line(0, (height/ 2) + 15, width, (height / 2) + 15);
+
+  for (let enemy of enemies) {
+    enemy.update();
+  }
+
   drawSprites();
 
   switch(state) {
@@ -65,9 +86,7 @@ function draw() {
     pl.position.y = (height / 2) + 1;
     pl.velocity.y = 0;
   } else if (pl.position.y < 0) {
-    pl.velocity.y = 0;
-    state = 2;
-    return;
+    pl.velocity.y = 1;
   }
 }
 
